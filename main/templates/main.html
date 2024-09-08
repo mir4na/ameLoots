@@ -1,0 +1,181 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ameLoots{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Signika:wght@400;600&family=Dosis:wght@300;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.google.com/specimen/Plus+Jakarta+Sans?query=jakarta+sans" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #00FFFF, #FFFFFF, #FFFF00);
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            font-family: 'Dosis', sans-serif; /* Default font for the body */
+        }
+
+        .content-container {
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); /* Update shadow */
+            margin-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: nowrap; /* Prevent wrapping on large screens */
+            background: linear-gradient(to left, #e5e7eb, #ffffff);
+        }
+
+        .content-text h1 {
+            font-family: 'Signika', sans-serif; /* Apply Signika to the h1 */
+            font-weight: 600; /* Use a heavier weight if desired */
+        }
+
+        .content-text {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            max-width: 50%;
+            margin-left: 20px; /* Add some margin to shift the text slightly to the right */
+        }
+
+        .content-image {
+            max-width: 40%; /* Set to take the other part of the container */
+            text-align: right; /* Align image to the right */
+        }
+
+        .content-image img {
+            max-width: 100%;
+            height: auto;
+            opacity: 0.6;
+        }
+
+        .btn-get-started {
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .content-container {
+                flex-direction: column;
+                text-align: center;
+                flex-wrap: wrap; /* Allow wrapping on small screens */
+            }
+            .content-text {
+                margin-left: 0; /* Reset margin for smaller screens */
+                max-width: 100%;
+            }
+            .content-image {
+                margin-top: 1rem;
+                max-width: 100%;
+                text-align: center; /* Center image on small screens */
+            }
+        }
+
+        .adv-section {
+            padding: 2rem 0;
+        }
+
+        .adv-item {
+            position: relative;
+            background-color: #000;
+            padding: 1rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .adv-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            opacity: 0.8;
+        }
+
+        .adv-item:hover .overlay {
+            opacity: 1;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            opacity: 0;
+            transition: opacity 0.5s;
+            padding: 1rem;
+        }
+
+        .overlay h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <div class="container">
+        <div class="content-container">
+            <div class="content-text d-flex justify-content-center align-items-center flex-column">
+                <h1 class="text-center mb-4">Welcome to ameLoots!</h1>
+                <p class="text">ameLoots is a cutting-edge e-commerce platform designed to elevate the online shopping experience. With a curated selection of exclusive, trendsetting products, we cater to those who seek more than just convenience — we offer a lifestyle.</p>
+            </div>
+            <div class="content-image">
+                <img src="{% static 'header.png' %}" alt="Featured Image">
+            </div>
+        </div>
+        
+        <!-- ameloots advantage section -->
+        <section class="adv-section">
+            <div class="container">
+                <!-- <h2 class="text-3xl md:text-4xl font-semibold text-center mb-10 text-gray-900">Greatest Painting on this Century</h2> -->
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                    <div class="col">
+                        <div class="adv-item">
+                            <img src="{% static 'adv1.png' %}" alt="Commitment to Quality and Innovation">
+                            <div class="overlay">
+                                <div class="text-center">
+                                    <h3 class="text-xl font-bold mb-4">Commitment to Quality and Innovation</h3>
+                                    <p>At ameLoots, quality is paramount. Every product is carefully selected to meet high standards, ensuring that customers receive not only stylish but also functional items. Additionally, the platform emphasizes innovation, consistently offering the latest and most advanced products on the market, keeping customers at the forefront of trends.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="adv-item">
+                            <img src="{% static 'adv2.png' %}" alt="Seamless and Enhanced Shopping Experience">
+                            <div class="overlay">
+                                <div class="text-center">
+                                    <h3 class="text-xl font-bold mb-4">Seamless and Enhanced Shopping Experience</h3>
+                                    <p>ameLoots prioritizes customer convenience with an intuitive interface, smooth navigation, and a streamlined, secure checkout process. Every aspect of the shopping journey is designed to be effortless, creating a pleasant and engaging experience that fosters long-term customer loyalty.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="adv-item">
+                            <img src="{% static 'adv3.png' %}" alt="Curated Selection of Exclusive and Trendsetting Products">
+                            <div class="overlay">
+                                <div class="text-center">
+                                    <h3 class="text-xl font-bold mb-4">Curated Selection of Exclusive and Trendsetting Products</h3>
+                                    <p>ameLoots offers a meticulously curated collection of exclusive, cutting-edge products, ensuring customers have access to innovative items that are hard to find elsewhere. This unique assortment elevates the shopping experience, appealing to those who value both rarity and style.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
