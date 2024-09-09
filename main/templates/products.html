@@ -1,8 +1,235 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Signika:wght@400;600&family=Dosis:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        .content-container {
+            background: linear-gradient(to left, #e5e7eb, #ffffff);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            margin-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: nowrap;
+        }
+
+        .content-text h1 {
+            font-family: 'Signika', sans-serif;
+            font-weight: 600;
+        }
+
+        .content-text {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            max-width: 50%;
+            margin-left: 20px;
+        }
+
+        .content-image img {
+            max-width: 100%;
+            height: auto;
+            opacity: 0.6;
+        }
+
+        @media (max-width: 768px) {
+            .content-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            .content-text {
+                margin-left: 0;
+                max-width: 100%;
+            }
+            .content-image {
+                margin-top: 1rem;
+                max-width: 100%;
+                text-align: center;
+            }
+        }
+
+        /* Categories layout */
+        .category-container {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+        .category-box {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s;
+            min-height: 100px;
+            width: 22%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .category-box:hover {
+            background-color: #e0e0e0;
+        }
+
+        /* Product item layout */
+        .product-item {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 10px;
+            border-radius: 5px;
+            transition: box-shadow 0.3s;
+            cursor: pointer;
+        }
+        .product-item:hover {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Purchase bar */
+        .purchase-bar {
+            position: fixed;
+            bottom: -100px;
+            left: 0;
+            right: 0;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            transition: bottom 0.3s;
+        }
+        .purchase-bar.show {
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+
 {% include 'navbar.html' %}
 
-{% block content %}
-<div class="content-container">
-    <h1 class="text-center mb-4">Products</h1>
-    <p class="text-center">Check out our wide range of products.</p>
+<div class="container mt-5">
+    <div class="content-container">
+        <div class="content-text d-flex justify-content-center align-items-center flex-column">
+            <h1 class="text-center mb-4">Welcome to ameLoots!</h1>
+            <p>ameLoots is a cutting-edge e-commerce platform designed to elevate the online shopping experience. With a curated selection of exclusive, trendsetting products, we offer more than just convenience — we offer a lifestyle.</p>
+        </div>
+        <div class="content-image">
+            <img src="{% static 'header.png' %}" alt="Featured Image">
+        </div>
+    </div>
+
+    <h1 class="text-center mb-4">Our Products</h1>
+
+    <!-- Category section -->
+    <div class="category-container">
+        <div class="category-box" data-category="food">Food</div>
+        <div class="category-box" data-category="equipment">Equipment</div>
+        <div class="category-box" data-category="architecture">Architecture Stuff</div>
+        <div class="category-box" data-category="vehicles">Vehicles</div>
+    </div>
+
+    <!-- Products section -->
+    <div id="products-list" class="row"></div>
 </div>
-{% endblock %}
+
+<!-- Purchase bar -->
+<div class="purchase-bar" id="purchaseBar">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h3 id="selectedProduct"></h3>
+                <p id="selectedPrice"></p>
+            </div>
+            <div class="col-md-6 text-end">
+                <button class="btn btn-primary" onclick="purchase()">Buy Now</button>
+                <button class="btn btn-secondary" onclick="hidePurchaseBar()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Sample products for categories
+        const products = {
+            food: [
+                {name: "Food 1", price: 10, description: "Delicious food item 1."},
+                {name: "Food 2", price: 12, description: "Delicious food item 2."},
+                {name: "Food 3", price: 15, description: "muantap rek"}
+            ],
+            equipment: [
+                {name: "Equipment 1", price: 50, description: "Useful equipment item 1."},
+                {name: "Equipment 2", price: 60, description: "Useful equipment item 2."}
+            ],
+            architecture: [
+                {name: "Architecture 1", price: 100, description: "Amazing architecture stuff 1."},
+                {name: "Architecture 2", price: 120, description: "Amazing architecture stuff 2."}
+            ],
+            vehicles: [
+                {name: "Vehicle 1", price: 1000, description: "Fast vehicle 1."},
+                {name: "Vehicle 2", price: 1200, description: "Fast vehicle 2."}
+            ]
+        };
+
+        // Display products based on category click
+        $('.category-box').on('click', function() {
+            const category = $(this).data('category');
+            displayProducts(products[category]);
+        });
+
+        // Function to display products with smooth animation
+        function displayProducts(items) {
+            $('#products-list').empty().hide();
+            items.forEach(item => {
+                $('#products-list').append(`
+                    <div class="col-md-4 product-item" data-name="${item.name}" data-price="${item.price}">
+                        <h3>${item.name}</h3>
+                        <p class="text-primary fw-bold">$${item.price}</p>
+                        <p>${item.description}</p>
+                    </div>
+                `);
+            });
+            $('#products-list').fadeIn(600);
+            $('.product-item').on('click', function() {
+                const name = $(this).data('name');
+                const price = $(this).data('price');
+                showPurchaseBar(name, price);
+            });
+        }
+
+        // Show and hide purchase bar
+        function showPurchaseBar(name, price) {
+            $('#selectedProduct').text(name);
+            $('#selectedPrice').text(`$${price}`);
+            $('#purchaseBar').addClass('show');
+        }
+
+        function hidePurchaseBar() {
+            $('#purchaseBar').removeClass('show');
+        }
+
+        // Close purchase bar when clicking outside of it
+        $(document).on('click', function(event) {
+            if (!$(event.target).closest('.purchase-bar, .product-item').length) {
+                $('#purchaseBar').removeClass('show');
+            }
+        });
+
+        function purchase() {
+            alert('Thank you for your purchase!');
+            hidePurchaseBar();
+        }
+    });
+</script>
+
+</body>
+</html>
